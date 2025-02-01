@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: oei_user
+      POSTGRES_PASSWORD: oei_password
+      POSTGRES_DB: oei_database
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: oei_user
+      DB_PASSWORD: oei_password
+      DB_NAME: orbital_edge_imaging
+
+volumes:
+  postgres_data:
